@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.5.
 
-Node.js version check: `node -v` v18.17.1
+Node.js version check: `node -v` v16.16  
 Angular CLI version check: `ng version`: Angular CL 9.1.1
 
 ### manual build
@@ -16,6 +16,9 @@ ng serve
 ```
 
 ### resolve build error `opensslErrorStack: [ 'error:03000086:digital envelope routines::initialization error' ]`
+
+if build / run this project under Angular 18.17.1, you may get some SSL error. Below is some workaround.
+
 https://stackoverflow.com/questions/74726224/opensslerrorstack-error03000086digital-envelope-routinesinitialization-e
 
 Option 2. Open a terminal and paste these as described:
