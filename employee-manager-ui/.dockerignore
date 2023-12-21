@@ -1,0 +1,42 @@
+# Exclude node_modules directory as it contains project dependencies
+node_modules
+
+# Exclude temporary build files
+/dist
+/tmp
+
+# Exclude development and editor-related files
+*.log
+*.swp
+*.swo
+*.swn
+*.swm
+*.bak
+*.vscode/
+*.idea/
+.vscode/
+
+# Exclude npm artifacts
+package-lock.json
+npm-debug.log
+
+# Exclude configuration files
+.angular-cli.json
+.angular.json
+karma.conf.js
+protractor.conf.js
+tsconfig.json
+tslint.json
+
+# Exclude test files
+*.spec.ts
+
+# Exclude build artifacts
+*.js
+*.js.map
+
+# Exclude Docker-related files
+Dockerfile
+.dockerignore
+.docker
+.dockerignore

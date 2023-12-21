@@ -1,0 +1,56 @@
+# Exclude Maven build directories
+target/
+
+# Exclude Gradle build directories
+build/
+
+# Exclude IDE-specific directories
+.idea/
+.vscode/
+
+# Exclude temporary build files
+*.log
+*.swp
+*.swo
+*.swn
+*.swm
+*.bak
+
+# Exclude application properties files
+application*.yml
+application*.properties
+
+# Exclude Docker-related files
+Dockerfile
+.dockerignore
+
+# Exclude test files
+*.class
+
+# Exclude Git-related files
+.git/
+.gitignore
+
+# Exclude Maven-specific files
+mvnw
+mvnw.cmd
+.settings/
+
+# Exclude Gradle-specific files
+gradle/
+.gradle/
+
+# Exclude dependency lock files
+build.gradle.lock
+dependencies.lock
+
+# Exclude Eclipse-specific files
+.project
+.classpath
+.settings/
+
+# Exclude IntelliJ-specific files
+*.iml
+*.ipr
+*.iws
+.idea/
