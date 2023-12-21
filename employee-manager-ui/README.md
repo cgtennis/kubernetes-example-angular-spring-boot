@@ -19,12 +19,6 @@ ng serve
 https://stackoverflow.com/questions/74726224/opensslerrorstack-error03000086digital-envelope-routinesinitialization-e
 
 Option 2. Open a terminal and paste these as described:
-Linux and macOS (Windows Git Bash)-
-
-export NODE_OPTIONS=--openssl-legacy-provider
-Windows command prompt-
-
-set NODE_OPTIONS=--openssl-legacy-provider
-Windows PowerShell-
-
-$env:NODE_OPTIONS = "--openssl-legacy-provider"
+Linux and macOS (Windows Git Bash): `export NODE_OPTIONS=--openssl-legacy-provider`
+Windows command prompt: `set NODE_OPTIONS=--openssl-legacy-provider`
+Windows PowerShell: `$env:NODE_OPTIONS = "--openssl-legacy-provider`
