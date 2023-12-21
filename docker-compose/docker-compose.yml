@@ -1,0 +1,14 @@
+services:
+  employee-manager-api:
+    image: cgtennis/employee-manager-api:latest
+    ports:
+      - "8080:8080"
+    container_name: employee-manager-api
+    restart: always
+
+  employee-manager-ui:
+    image: cgtennis/employee-manager-ui:latest
+    ports:
+      - "4200:80"
+    container_name: employee-manager-ui
+    restart: always
