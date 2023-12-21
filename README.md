@@ -9,6 +9,8 @@
 change directory to `employee-manager-api`
 ```sh
 cd employee-manager-api
+# clean up previously built image before build
+docker rmi -f employee-manager-api
 docker build -t employee-manager-api .
 ```
 verify the image
@@ -26,6 +28,8 @@ To verify from a brower, enter `http://localhost:8080/employee/all` in chrome, i
 change directory to `employee-manager-ui`
 ```sh
 cd employee-manager-ui
+# clean up previously built image before build
+docker rmi -f employee-manager-ui
 docker build -t employee-manager-ui .
 ```
 verify the image
