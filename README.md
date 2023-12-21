@@ -71,3 +71,11 @@ docker rmi cgtennis/employee-manager-api:latest
 docker image prune
 docker images   # to double check there are no left-over employee-manager related images
 ```
+to start containers defined in docker-compose
+```
+docker-compose up -d
+```
+to stop containers defined in docker-compose
+```
+docker-compose down
+```
