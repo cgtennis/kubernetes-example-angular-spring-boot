@@ -11,4 +11,4 @@ FROM nginx:1.17.1-alpine
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy built files from the first stage
-COPY --from=builder /app/dist/employeemanagerapp/* /usr/share/nginx/html
+COPY --from=builder /app/dist/employeemanagerapp/* /usr/share/nginx/html/
