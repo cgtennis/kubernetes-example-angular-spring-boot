@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 # Build the Angular application with a build argument for apiBaseUrl
-ARG API_BASE_URL=http://localhost:8000
+ARG API_BASE_URL=$API_BASE_URL
 RUN npm run build -- --prod 
 
 # Second Stage: Setup Nginx
