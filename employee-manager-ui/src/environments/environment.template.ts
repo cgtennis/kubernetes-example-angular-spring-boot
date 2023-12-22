@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: '${APT_BASE_URL}'  
+  apiBaseUrl: '${API_BASE_URL}'  
 };

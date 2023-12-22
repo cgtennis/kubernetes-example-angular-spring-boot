@@ -49,7 +49,7 @@ docker build -t employee-manager-ui .
 examine the dockerfile, how to setup `API_BASE_URL` 
 referring to this article about [How to passing environment variables to Angular](https://dzone.com/articles/using-environment-variable-with-angular)
 ```
-docker build --no-cache --build-arg API_BASE_URL=http://localhost:7777 -t employee-manager-ui .
+docker build --no-cache --build-arg API_BASE_URL=$API_BASE_URL -t employee-manager-ui .
 ```
 verify the image
 ```sh
@@ -61,7 +61,6 @@ docker run -d -p 4200:80 --name employee-manager-ui employee-manager-ui
 docker ps
 ```
 To verify from a brower, enter `http://localhost:4200` in chrome, you should be able to add employee, search and delete
-
 * Experiment - TODO
   - stop the docker containers 
   - modify the port of api to 7777
