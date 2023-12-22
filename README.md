@@ -23,7 +23,7 @@ change directory to `employee-manager-api`
 cd employee-manager-api
 # clean up previously built image before build
 docker rmi -f employee-manager-api
-docker build -t employee-manager-api .
+docker build --no-cache -t employee-manager-api .
 ```
 verify the image
 ```sh
@@ -43,7 +43,7 @@ cd employee-manager-ui
 # clean up previously built image before build
 docker rmi -f employee-manager-ui
 # assuming running both ui and api on http://localhost:8080
-docker build --build-arg API_BASE_URL=$API_BASE_URL -t employee-manager-ui .
+docker build --no-cache --build-arg API_BASE_URL=$API_BASE_URL -t employee-manager-ui .
 ```
 * if running api (step 1) on a remote server or a different port say `7777`, need to add build-arg for ui docker build (which will be built into javascript)
 examine the dockerfile, how to setup `API_BASE_URL` 
