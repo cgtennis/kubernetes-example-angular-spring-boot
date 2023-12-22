@@ -134,6 +134,13 @@ NAME                STATUS   ROLES                  AGE   VERSION
 dev-control-plane   Ready    control-plane,master   10m   v1.23.5
 ```
 
+By default, kind create 1 control-plane and 1 work-node per cluster. We can adjustment number of control-plane or number of work-node.
+To create a kind cluster with one control-plane node and two worker nodes, you can use the following configuration file (kind-config.yaml):
+```
+kind delete cluster --name dev
+kind create cluster --name dev --image kindest/node:v1.23.5 --config .\kind\kind-config.yaml
+```
+
 * Working with Kubernetes resources
 Now that we have cluster access, next we can read resources from the cluster
 with the `kubectl get` command.
@@ -152,9 +159,10 @@ kubectl create ns employee-manager
 The most common and recommended way to create resources in Kubernetes is with the `kubectl apply` command. </br>
 This command takes in declarative `YAML` files.
 ```
-kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/deployments.yaml
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/deployments.yaml
+deployment.apps/employee-manager-api created
+deployment.apps/employee-manager-ui created
 ```
-
 
 List resources in a namespace
 ```
@@ -167,6 +175,12 @@ kubectl get configmaps
 kubectl get secrets
 kubectl get ingress
 ```
+Examine the two employee-manager pods that's created.
+```
+kubectl get pods -A -o wide
+```
+we will find both the `employee-manager-api` and `employee-manager-ui` are in the list. `-A` means all namespaces, `-o wide` flag to display additional information
+
 
 We can checkout our site with the `port-forward` command:
 
