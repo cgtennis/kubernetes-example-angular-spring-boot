@@ -44,9 +44,11 @@ cd employee-manager-ui
 docker rmi -f employee-manager-ui
 # assuming running both ui and api on http://localhost:8080
 docker build -t employee-manager-ui .
-# if running api (step 1) on a remote server, need to add build-arg for ui docker build (which will be built into javascript)
-docker build --build-arg API_BASE_URL=http://192.168.1.5:8080 -t your-angular-app .
-
+```
+* if running api (step 1) on a remote server, need to add build-arg for ui docker build (which will be built into javascript)
+examine the dockerfile, how to setup `API_BASE_URL` 
+```
+docker build --build-arg API_BASE_URL=http://192.168.1.5:8080 -t employee-manager-ui .
 ```
 verify the image
 ```sh
@@ -59,7 +61,11 @@ docker ps
 ```
 To verify from a brower, enter `http://localhost:4200` in chrome, you should be able to add employee, search and delete
 
-
+* Experiment - TODO
+  - stop the docker containers 
+  - modify the port of api to 8888
+  - rebuild ui and pass 8888 to docker build process
+  - re-verify everything
 
 
 ### Step 3: use docker-compose to pull the images from docker hub and run them
