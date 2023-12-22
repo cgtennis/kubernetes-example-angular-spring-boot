@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "replace-vars": "node ./src/environments/replace_environment_variables.js",
+    "start": "npm run-script replace-vars && ng serve",
+    "build": "npm run-script replace-vars && ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
