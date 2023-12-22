@@ -2,9 +2,11 @@
 FROM node:16.16-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install -f
+RUN npm install
 COPY . .
-RUN npm run build
+# Build the Angular application with a build argument for apiBaseUrl
+ARG API_BASE_URL=http://localhost:8080
+RUN npm run build --deploy-url=${API_BASE_URL}
 
 # Second Stage: Setup Nginx
 FROM nginx:1.17.1-alpine

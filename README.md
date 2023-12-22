@@ -15,6 +15,9 @@ Tools installation such as WSL, docker, docker-compose, kubectl, kind won't be c
   - Helm is installed
 
 ### Step 1: build & run employee-manager-api docker image
+```
+git clone https://github.com/cgtennis/kubernetes-example-angular-spring-boot.git
+```
 change directory to `employee-manager-api`
 ```sh
 cd employee-manager-api
@@ -39,7 +42,11 @@ change directory to `employee-manager-ui`
 cd employee-manager-ui
 # clean up previously built image before build
 docker rmi -f employee-manager-ui
+# assuming running both ui and api on http://localhost:8080
 docker build -t employee-manager-ui .
+# if running api (step 1) on a remote server, need to add build-arg for ui docker build (which will be built into javascript)
+docker build --build-arg API_BASE_URL=http://192.168.1.5:8080 -t your-angular-app .
+
 ```
 verify the image
 ```sh
@@ -138,7 +145,7 @@ By default, kind create 1 control-plane and 1 work-node per cluster. We can adju
 To create a kind cluster with one control-plane node and two worker nodes, you can use the following configuration file (kind-config.yaml):
 ```
 kind delete cluster --name dev
-kind create cluster --name dev --image kindest/node:v1.23.5 --config .\kind\kind-config.yaml
+kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config.yaml
 ```
 
 * Working with Kubernetes resources
@@ -157,23 +164,11 @@ kubectl create ns employee-manager
 ```
 * Working with YAML
 The most common and recommended way to create resources in Kubernetes is with the `kubectl apply` command. </br>
-This command takes in declarative `YAML` files.
+This command takes in declarative `YAML` files. Now let's apploy the deployments of the two employee-manager images
 ```
 $ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/deployments.yaml
 deployment.apps/employee-manager-api created
 deployment.apps/employee-manager-ui created
-```
-
-List resources in a namespace
-```
-kubectl get <resource>
-
-kubectl get pods
-kubectl get deployments
-kubectl get services
-kubectl get configmaps
-kubectl get secrets
-kubectl get ingress
 ```
 Examine the two employee-manager pods that's created.
 ```
@@ -181,18 +176,30 @@ kubectl get pods -A -o wide
 ```
 we will find both the `employee-manager-api` and `employee-manager-ui` are in the list. `-A` means all namespaces, `-o wide` flag to display additional information
 
+Now, to apply the two services
+```
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services.yaml
+```
+Examine the two services that's created.
+```
+kubectl get services -A -o wide
+```
 
 We can checkout our site with the `port-forward` command:
-
 ```
-kubectl -n wordpress-site get svc
-
-NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
-mysql       ClusterIP   10.96.146.75   <none>        3306/TCP   17s
-wordpress   ClusterIP   10.96.157.6    <none>        80/TCP     17s
-
-kubectl -n wordpress-site port-forward svc/wordpress 80
+kubectl port-forward -n employee-manager service/employee-manager-ui-service 4200:4200
 ```
+
+* References: List resources in a namespace
+```
+kubectl get pods
+kubectl get deployments
+kubectl get services
+kubectl get configmaps
+kubectl get secrets
+kubectl get ingress
+```
+
 * Clean up
 
 ```
