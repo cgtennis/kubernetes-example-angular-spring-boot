@@ -9,7 +9,7 @@ ARG API_BASE_URL=$API_BASE_URL
 RUN echo "****************************************************"
 RUN echo "API_BASE_URL: ${API_BASE_URL}"
 RUN echo "****************************************************"
-RUN npm run build -- --prod 
+RUN npm run build  
 
 # Second Stage: Setup Nginx
 FROM nginx:1.17.1-alpine
