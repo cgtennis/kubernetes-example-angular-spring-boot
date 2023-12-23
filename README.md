@@ -207,6 +207,16 @@ kubectl port-forward -n employee-manager service/employee-manager-ui-service 420
 ```
 Use a brower to check http://localhost:4200
 
+By default, the service type is ClusterIP (which is internal IP inside cluster). We can change it to Node Port which is external IP (but limited range 30000-32767)
+```
+# dry run to validate yaml syntax
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-port.yaml --dry-run=client
+# if validation is good, apply the service
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-port.yaml
+```
+This will open up the UI service to external (we keep the API service localhost 8080 port-forwarding running)
+ 
+
 * References: List resources in a namespace
 ```
 kubectl get pods
