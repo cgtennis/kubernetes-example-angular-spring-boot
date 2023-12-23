@@ -263,6 +263,15 @@ The External IP for the UI service shows pending. This IP assignment process is 
 kubectl get services -n employee-manager -o wide  
 ```
 
+Experiment with 2 replicas
+```
+# dry run to validate yaml syntax
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-port-2-replica.yaml --dry-run=client
+# if validation is good, apply the service
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-port-2-replica.yaml
+```
+
+
 Optional experiment: ***Ingress Controller***
 Main purpose: Ingress controllers allow you to define different paths for different services within the same domain.
 Use AWS ALB directly with NodePort services (without ingress) is technically possible (if the feature 'same-domain-differenct-service' is not needed)
