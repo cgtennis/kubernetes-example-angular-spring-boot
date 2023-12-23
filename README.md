@@ -163,8 +163,20 @@ For simplicity, we're still using one cluster. However we'll need to map a clust
 ```
 kind delete cluster --name dev
 kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config-port-30000.yaml
+# create sample nginx deployment 
+kubectl create deployment nginx --image=nginx --port=80
+# create sample nginx service 
+kubectl create service nodeport nginx --tcp=80:80 --node-port=30000
+# test nginx home page
+curl localhost:30000
 ```
+Open a browser and test `http://localhost:30000`
 
+Now, we delete the Nginx service, and deployment alogn with associated pods.
+```
+kubectl delete service nginx 
+kubectl delete deployment nginx --cascade
+```
 
 
 * Working with Kubernetes resources
@@ -186,8 +198,8 @@ The most common and recommended way to create resources in Kubernetes is with th
 This command takes in declarative `YAML` files. Now let's apploy the deployments of the two employee-manager images
 ```
 $ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/deployments.yaml
-deployment.apps/employee-manager-api created
-deployment.apps/employee-manager-ui created
+# deployment.apps/employee-manager-api created
+# deployment.apps/employee-manager-ui created
 ```
 Examine the two employee-manager pods that's created.
 ```
@@ -239,17 +251,23 @@ Somehow, I can't open http://<node's ip address>:30000 in a brower.
 However, I can `curl http://<node's ip address>:30000` from the wsl terminal
 There is why: Kubernetes on Windows Docker Desktop by default runs its components in WSL2 (Windows subsystem for Linux), it's separate virtual machine with its own IP address and localhost. This is the reason why service is not reachable on localhost from host OS (in this case Windows).
 
-Let's try Load Balancer service type
+Optional experiment: ***Load Balancer service type***
 ```
 # dry run to validate yaml syntax
 $ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-load-balancer.yaml --dry-run=client
 # if validation is good, apply the service
 $ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-load-balancer.yaml
 ```
-Now External IP for the UI service shows pending. The external IP provisioning process happens asynchronously. This IP assignment process is dependent on the Kubernetes hosting environment (the cloud provider). 
+The External IP for the UI service shows pending. This IP assignment process is dependent on the Kubernetes hosting environment (the cloud provider). It's not going to work for local kubernetes environment
 ```
 kubectl get services -n employee-manager -o wide  
 ```
+
+Optional experiment: ***Ingress Controller***
+Main purpose: Ingress controllers allow you to define different paths for different services within the same domain.
+Use AWS ALB directly with NodePort services (without ingress) is technically possible (if the feature 'same-domain-differenct-service' is not needed)
+For local environment, use a stand-alone Nginx with reverse proxy forwarding is also possible (without needing use Ingress)
+For how to setup ingress, refer to [Kubernetes Ingress: NGINX Explained] (https://www.youtube.com/watch?v=u948CURLDJA&t=513s)
 
 * References: List resources in a namespace
 ```
