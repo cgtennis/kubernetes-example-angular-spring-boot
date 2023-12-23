@@ -207,6 +207,9 @@ kubectl port-forward -n employee-manager service/employee-manager-ui-service 420
 ```
 Use a brower to check http://localhost:4200
 
+(we keep the API service localhost 8080 port-forwarding running)
+Now we terminate the 4200 port-forwarding and try to use NodePort
+
 By default, the service type is ClusterIP (which is internal IP inside cluster). We can change it to Node Port which is external IP (but limited range 30000-32767)
 ```
 # dry run to validate yaml syntax
@@ -214,8 +217,20 @@ $ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-p
 # if validation is good, apply the service
 $ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-port.yaml
 ```
-This will open up the UI service to external (we keep the API service localhost 8080 port-forwarding running)
- 
+This will open up the UI service in the pods to the hosting node (i.e. EC2 in AWS) 
+Let's check `NodePort` for the UI service
+```
+kubectl get services -n employee-manager -o wide   # Examine the 30000+ port
+kubectl get nodes -o wide    # from here we get <node's ip address>, we should be able to ping it (i.e. EC2 in AWS)
+kubectl get pods -n employee-manager -o wide  # check the UI is assigned to which node 
+kubectl describe svc -n employee-manager employee-manager-ui-service   # double check the service
+``` 
+Somehow, I can't open http://<node's ip address>:30000 in a brower. 
+However, I can `curl http://<node's ip address>:30000` from the wsl terminal
+There is why: Kubernetes on Windows Docker Desktop by default runs its components in WSL2 (Windows subsystem for Linux), it's separate virtual machine with its own IP address and localhost. This is the reason why service is not reachable on localhost from host OS (in this case Windows).
+
+
+
 
 * References: List resources in a namespace
 ```
