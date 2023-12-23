@@ -154,8 +154,18 @@ By default, kind create 1 control-plane and 1 work-node per cluster. We can adju
 To create a kind cluster with one control-plane node and two worker nodes, you can use the following configuration file (kind-config.yaml):
 ```
 kind delete cluster --name dev
-kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config.yaml
+kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config-2-worker
+# examine two nodes
+kubectl get nodes -A -o wide
+kubectl get pods -A -o wide
 ```
+For simplicity, we're still using one cluster. However we'll need to map a cluster port to a host port
+```
+kind delete cluster --name dev
+kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config-port-30000.yaml
+```
+
+
 
 * Working with Kubernetes resources
 Now that we have cluster access, next we can read resources from the cluster
@@ -229,8 +239,17 @@ Somehow, I can't open http://<node's ip address>:30000 in a brower.
 However, I can `curl http://<node's ip address>:30000` from the wsl terminal
 There is why: Kubernetes on Windows Docker Desktop by default runs its components in WSL2 (Windows subsystem for Linux), it's separate virtual machine with its own IP address and localhost. This is the reason why service is not reachable on localhost from host OS (in this case Windows).
 
-
-
+Let's try Load Balancer service type
+```
+# dry run to validate yaml syntax
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-load-balancer.yaml --dry-run=client
+# if validation is good, apply the service
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-load-balancer.yaml
+```
+Now External IP for the UI service shows pending. The external IP provisioning process happens asynchronously. This IP assignment process is dependent on the Kubernetes hosting environment (the cloud provider). 
+```
+kubectl get services -n employee-manager -o wide  
+```
 
 * References: List resources in a namespace
 ```
