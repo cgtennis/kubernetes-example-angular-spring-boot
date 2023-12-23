@@ -154,7 +154,7 @@ By default, kind create 1 control-plane and 1 work-node per cluster. We can adju
 To create a kind cluster with one control-plane node and two worker nodes, you can use the following configuration file (kind-config.yaml):
 ```
 kind delete cluster --name dev
-kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config-2-worker
+kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config-2-worker.yaml
 # examine two nodes
 kubectl get nodes -A -o wide
 kubectl get pods -A -o wide
