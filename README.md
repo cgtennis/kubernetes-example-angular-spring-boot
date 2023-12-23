@@ -263,12 +263,12 @@ The External IP for the UI service shows pending. This IP assignment process is 
 kubectl get services -n employee-manager -o wide  
 ```
 
-Experiment with 2 replicas
+Experiment with 2 replicas in deployments yaml
 ```
 # dry run to validate yaml syntax
-$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-port-2-replica.yaml --dry-run=client
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/deployments-2-replica.yaml --dry-run=client
 # if validation is good, apply the service
-$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-port-2-replica.yaml
+$ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/deployments-2-replica.yaml
 ```
 
 
