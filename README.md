@@ -29,7 +29,7 @@ verify the image
 ```sh
 docker images
 ```
-run docker image as daemon  (after --name, it's container name, then image name/tag)
+run docker image as daemon  (after --name, it's cogit ntainer name, then image name/tag)
 ```sh
 docker run -d -p 8080:8080 --name employee-manager-api employee-manager-api
 docker ps
@@ -42,14 +42,14 @@ change directory to `employee-manager-ui`
 cd employee-manager-ui
 # clean up previously built image before build
 docker rmi -f employee-manager-ui
-# assuming running both ui and api on http://localhost:8080
+# set environment variable for API base URL (http://localhost:8080) and pass into angular UI docker build process 
+export API_BASE_URL=http://localhost:8080
 docker build --no-cache --build-arg API_BASE_URL=$API_BASE_URL -t employee-manager-ui .
 ```
-* if running api (step 1) on a remote server or a different port say `7777`, need to add build-arg for ui docker build (which will be built into javascript)
-examine the dockerfile, how to setup `API_BASE_URL` 
+* if running api (step 1) on a remote server say 192.168.1.5:8080, need to add build-arg for ui docker build (which will be built into javascript)
 referring to this article about [How to passing environment variables to Angular](https://dzone.com/articles/using-environment-variable-with-angular)
 ```
-export API_BASE_URL=http://localhost:8080
+export API_BASE_URL=http://192.168.1.5:8080
 docker build --no-cache --build-arg API_BASE_URL=$API_BASE_URL -t employee-manager-ui .
 ```
 verify the image
@@ -73,16 +73,19 @@ To verify from a brower, enter `http://localhost:4200` in chrome, you should be 
 - these images are pushed to docker account 'cgtennis', two repositories already created in docker hub
   - employee-manager-ui
   - employee-manager-api
-```sh
-docker Login
-# assuming locally built image: employee-manager-ui:latest
+* Do NOT do it yourself for docker push, as you don't have write permission to my account
+```sh (
+docker login
+# push the locally built image "employee-manager-ui:latest" to docker hub
 # push UI
 docker tag employee-manager-ui:latest  cgtennis/employee-manager-ui:latest
 docker push cgtennis/employee-manager-ui:latest
+# push the locally built image "employee-manager-api:latest" to docker hub
 # push API
 docker tag employee-manager-api:latest  cgtennis/employee-manager-api:latest
 docker push cgtennis/employee-manager-api:latest
 ```
+
 Let's clean up local docker images before running docker compose
 ```sh
 docker stop employee-manager-ui
@@ -127,8 +130,7 @@ Kind (running under docker) is an light-weight tool for running test clusters lo
 Also it's eaiser for Kind to create multiple clusters.
 [kind quick start](https://kind.sigs.k8s.io/docs/user/quick-start/)
 
-
-we will run two clusters side by side so we can demonstrate cluster access.
+we will run two clusters side by side so we can demonstrate cluster access (I've already have `kind` installed)
 
 ```
 kind create cluster --name dev --image kindest/node:v1.23.5
@@ -192,10 +194,18 @@ Examine the two services that's created.
 kubectl get services -A -o wide
 ```
 
-We can checkout our site with the `port-forward` command:
+We can checkout our site with the `port-forward` command (ClusterIP is internal, there is no external IP for both services)
+Open Terminal #1
+```
+kubectl port-forward -n employee-manager service/employee-manager-api-service 8080:8080
+```
+Use a browser to check http://localhost:8080/employee/all
+
+Open Terminal #2
 ```
 kubectl port-forward -n employee-manager service/employee-manager-ui-service 4200:4200
 ```
+Use a brower to check http://localhost:4200
 
 * References: List resources in a namespace
 ```
