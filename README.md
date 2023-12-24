@@ -76,14 +76,15 @@ To verify from a brower, enter `http://localhost:4200` in chrome, you should be 
 * Do NOT do it yourself for docker push, as you don't have write permission to my account
 ```sh (
 docker login
-# push the locally built image "employee-manager-ui:latest" to docker hub
-# push UI
-docker tag employee-manager-ui:latest  cgtennis/employee-manager-ui:latest
-docker push cgtennis/employee-manager-ui:latest
 # push the locally built image "employee-manager-api:latest" to docker hub
 # push API
 docker tag employee-manager-api:latest  cgtennis/employee-manager-api:latest
 docker push cgtennis/employee-manager-api:latest
+
+# push the locally built image "employee-manager-ui:latest" to docker hub
+# push UI
+docker tag employee-manager-ui:latest  cgtennis/employee-manager-ui:latest
+docker push cgtennis/employee-manager-ui:latest
 ```
 
 Let's clean up local docker images before running docker compose
@@ -154,7 +155,7 @@ By default, kind create 1 control-plane and 1 work-node per cluster. We can adju
 To create a kind cluster with one control-plane node and two worker nodes, you can use the following configuration file (kind-config.yaml):
 ```
 kind delete cluster --name dev
-kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config-2-worker.yaml
+kind create cluster --name dev --image kindest/node:v1.23.5 --config ./kind/kind-config-2-worker-30000.yaml
 # examine two nodes
 kubectl get nodes -A -o wide
 kubectl get pods -A -o wide
@@ -172,7 +173,7 @@ curl localhost:30000
 ```
 Open a browser and test `http://localhost:30000`
 
-Now, we delete the Nginx service, and deployment alogn with associated pods.
+Now, we delete the Nginx service, and deployment along with associated pods.
 ```
 kubectl delete service nginx 
 kubectl delete deployment nginx --cascade
