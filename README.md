@@ -272,6 +272,18 @@ $ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/deployments-2-r
 $ kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/deployments-2-replica.yaml
 ```
 
+Exeriment with 2 repliacas to test http load distributing across 2 replias.
+```
+# delete both API and UI services. Now we're routing 8080 API service to cluster host port 30000, so that we can curl http://localhost:30000/api/info
+kubectl -n employee-manager apply -f ./kubernetes/kubectl-yaml/services-node-port-both.yaml
+# open two terminals, monitor real-time logs
+kubectl logs -f -n employee-manager  <api pod-1 name>
+kubectl logs -f -n employee-manager  <api pod-1 name>
+# Open a 3rd terminal, run below, this H 
+curl -H "Connection: close" http://localhost:30000/api/info
+```
+refer to this article about [Only 1 pod handles all requests in Kubernetes cluster](https://stackoverflow.com/questions/58580778/only-1-pod-handles-all-requests-in-kubernetes-cluster)
+
 
 Optional experiment: ***Ingress Controller***
 Main purpose: Ingress controllers allow you to define different paths for different services within the same domain.
